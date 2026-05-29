@@ -4,6 +4,46 @@
 
 To be able to build Mule you will need Maven among other things. Refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file to find the installation instructions and prerequisites necessary to build Mule.
 
+### Prerequisites
+
+- **Java 17** (Eclipse Temurin recommended)
+- **Maven 3.9+**
+- **MuleSoft Nexus access** — The build depends on SNAPSHOT artifacts hosted on MuleSoft's private Nexus repository (`repository.mulesoft.org`). You must configure Maven with valid credentials.
+
+### Maven Settings Setup
+
+The build requires access to MuleSoft's Nexus repository for SNAPSHOT dependencies. Configure your Maven settings:
+
+1. Copy the template to your Maven config directory:
+   ```bash
+   cp .mvn/settings.xml.template ~/.m2/settings.xml
+   ```
+
+2. Edit `~/.m2/settings.xml` and replace `YOUR_NEXUS_USERNAME` and `YOUR_NEXUS_PASSWORD_OR_TOKEN` with your MuleSoft Nexus credentials.
+
+3. Verify connectivity:
+   ```bash
+   mvn validate
+   ```
+
+> **Note:** Without valid Nexus credentials, the build will fail with:
+> `Non-resolvable parent POM: Could not transfer artifact org.mule:mule-plugin-mgmt-parent-pom`
+
+### Continuous Integration
+
+This project uses **GitHub Actions** for CI (see [`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
+
+**Required repository secrets:**
+| Secret | Description |
+|:-------|:------------|
+| `MULE_NEXUS_USER` | MuleSoft Nexus username |
+| `MULE_NEXUS_PASSWORD` | MuleSoft Nexus password or token |
+
+The CI pipeline runs on push/PR to `main`, `master`, and `mule-4.*` branches. It:
+1. Builds all modules (skipping tests) to verify compilation
+2. Runs unit tests with verification checks disabled for fast feedback
+3. Uploads surefire reports as artifacts on failure
+
 In the following sections you will learn how Mule is organized, how to build Mule and how to troubleshoot problems we might find.
 
 ### Mule Source Code Sub-projects
