@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Maven settings template for building the Mule Kernel.
+
+  Copy this file to ~/.m2/settings.xml and replace the placeholder values
+  with your MuleSoft Nexus credentials.
+
+  Required repository secrets for GitHub Actions CI:
+    - MULE_NEXUS_USER: Your MuleSoft Nexus username
+    - MULE_NEXUS_PASSWORD: Your MuleSoft Nexus password/token
+-->
+<settings xmlns="http://maven.apache.org/SETTINGS/1.2.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.2.0 http://maven.apache.org/xsd/settings-1.2.0.xsd">
+
+  <servers>
+    <server>
+      <id>mule</id>
+      <username>YOUR_NEXUS_USERNAME</username>
+      <password>YOUR_NEXUS_PASSWORD_OR_TOKEN</password>
+    </server>
+    <server>
+      <id>mule-plugin</id>
+      <username>YOUR_NEXUS_USERNAME</username>
+      <password>YOUR_NEXUS_PASSWORD_OR_TOKEN</password>
+    </server>
+  </servers>
+
+  <profiles>
+    <profile>
+      <id>mule-repos</id>
+      <repositories>
+        <repository>
+          <id>mule</id>
+          <name>Mule Repository</name>
+          <url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+          </snapshots>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>mule-plugin</id>
+          <name>Mule Plugin Repository</name>
+          <url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+          </snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+  </profiles>
+
+  <activeProfiles>
+    <activeProfile>mule-repos</activeProfile>
+  </activeProfiles>
+
+</settings>
